@@ -17,6 +17,7 @@ abstract class Engine(parentID:String, val width:Int = 640, val height:Int = 480
 	canvas.id = "engine"
 	canvas.width = width
 	canvas.height = height
+	canvas.style.border = "1px solid gray"
 	g.document.getElementById(parentID).appendChild(canvas)
 	val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
 
