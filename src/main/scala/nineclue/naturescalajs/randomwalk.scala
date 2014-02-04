@@ -2,7 +2,7 @@ package nineclue.naturescalajs
 
 import util.Random
 
-class RandomWalk(parent:String, width:Int, height:Int) extends Engine(parent, width, height) {
+class RandomWalk(parent:String, width:Int, height:Int) extends CanvasEngine(parent, width, height) {
 	var x:Int = width / 2
 	var y:Int = height / 2
 
@@ -19,7 +19,7 @@ class RandomWalk(parent:String, width:Int, height:Int) extends Engine(parent, wi
 	}
 }
 
-class RandomDraw(parent:String, width:Int, height:Int) extends Engine(parent, width, height) {
+class RandomDraw(parent:String, width:Int, height:Int) extends CanvasEngine(parent, width, height) {
 	var x = 0
 	val vals = new Array[Int](width)
 
@@ -41,7 +41,7 @@ class RandomDraw(parent:String, width:Int, height:Int) extends Engine(parent, wi
 	}
 }
 
-class NoiseDraw(parent:String, val width:Int, val height:Int) extends Engine(parent, width, height) {
+class NoiseDraw(parent:String, val width:Int, val height:Int) extends CanvasEngine(parent, width, height) {
 	var x = 0
 	var t:Double = 0.0
 	val vals = new Array[Int](width)
