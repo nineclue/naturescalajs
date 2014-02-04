@@ -7,9 +7,9 @@ import util.Random
 
 object Naturescalajs {
   def main(): Unit = {
-  	// new RandomWalk("playground", 640, 480)
+  	new RandomDraw("playground", 600, 300)
   	// (1 to 100).foreach(i => println(s"$i : ${Utility.noise(i)}"))
-  	new NoiseDraw("playground", 600, 600)
+  	new NoiseDraw("playground", 600, 300)
 	}
 
 }

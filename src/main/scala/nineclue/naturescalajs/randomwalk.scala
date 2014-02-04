@@ -19,25 +19,25 @@ class RandomWalk(parent:String, width:Int, height:Int) extends Engine(parent, wi
 	}
 }
 
-class RandomDraw(parent:String, width:Int, height:Int) extends Engine(parent) {
+class RandomDraw(parent:String, width:Int, height:Int) extends Engine(parent, width, height) {
 	var x = 0
-	var y = 0
+	val vals = new Array[Int](width)
+
 	ctx.fillStyle = "black"
 	ctx.strokeStyle = "black"
 	def remap = Utility.map(Int.MinValue, Int.MaxValue, 0, canvas.height)_
 
 	def draw = {
-		if (x >= canvas.width) Unit
-		else {
-			val i = Random.nextInt
-			ctx.beginPath
-			ctx.moveTo(x, y)
-			ctx.lineTo(x, remap(i))
-			ctx.closePath
-			ctx.stroke
-			x += 2
-			y = remap(i).toInt
-		}
+		val i = x % width
+		val v = remap(Random.nextInt).toInt
+		vals(i) = v
+		ctx.clearRect(0, 0, width, height)
+		ctx.beginPath
+		if (x >= width)
+			((i+1) until width).foreach(n => ctx.lineTo(n-i, vals(n)))
+		(0 to i).foreach(n => ctx.lineTo(n + (width - i), vals(n)))
+		ctx.stroke
+		x += 1
 	}
 }
 
