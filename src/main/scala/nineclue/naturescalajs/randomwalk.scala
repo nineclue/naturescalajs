@@ -18,3 +18,53 @@ class RandomWalk(parent:String, width:Int, height:Int) extends Engine(parent, wi
 		else if (i == 3) y -= 1
 	}
 }
+
+class RandomDraw(parent:String, width:Int, height:Int) extends Engine(parent) {
+	var x = 0
+	var y = 0
+	ctx.fillStyle = "black"
+	ctx.strokeStyle = "black"
+	def remap = Utility.map(Int.MinValue, Int.MaxValue, 0, canvas.height)_
+
+	def draw = {
+		if (x >= canvas.width) Unit
+		else {
+			val i = Random.nextInt
+			ctx.beginPath
+			ctx.moveTo(x, y)
+			ctx.lineTo(x, remap(i))
+			ctx.closePath
+			ctx.stroke
+			x += 2
+			y = remap(i).toInt
+		}
+	}
+}
+
+class NoiseDraw(parent:String, val width:Int, val height:Int) extends Engine(parent, width, height) {
+	var x = 0
+	var t:Double = 0.0
+	val vals = new Array[Int](width)
+
+	ctx.fillStyle = "black"
+	ctx.strokeStyle = "black"
+	def remap = Utility.map(-1, 1, 0, canvas.height)_
+
+	def draw = {
+		val i = x % width
+		val v = remap(Utility.noise(t)).toInt
+		vals(i) = v
+		ctx.clearRect(0, 0, width, height)
+		ctx.beginPath
+		ctx.moveTo(0, vals(i))
+		(i+1 until width).foreach(n => ctx.lineTo(n-i, vals(n)))
+		if (i != 0)
+			(0 to i).foreach(n => ctx.lineTo(n+(width-i), vals(n)))
+		ctx.closePath
+		ctx.stroke
+		x += 1
+		if (x >= width - 1) ctx.translate(1, 0)
+		t += 0.02
+	}
+
+}

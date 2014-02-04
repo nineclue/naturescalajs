@@ -7,12 +7,14 @@ import util.Random
 
 object Naturescalajs {
   def main(): Unit = {
-  	new RandomWalk("playground", 640, 480)
+  	// new RandomWalk("playground", 640, 480)
+  	// (1 to 100).foreach(i => println(s"$i : ${Utility.noise(i)}"))
+  	new NoiseDraw("playground", 600, 600)
 	}
 
 }
 
-abstract class Engine(parentID:String, val width:Int = 640, val height:Int = 480, val fps:Int = 30) {
+abstract class Engine(parentID:String, width:Int = 640, height:Int = 480, fps:Int = 30) {
 	val canvas = g.document.createElement("canvas").asInstanceOf[dom.HTMLCanvasElement]
 	canvas.id = "engine"
 	canvas.width = width
