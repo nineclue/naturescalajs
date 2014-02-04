@@ -56,14 +56,11 @@ class NoiseDraw(parent:String, val width:Int, val height:Int) extends Engine(par
 		vals(i) = v
 		ctx.clearRect(0, 0, width, height)
 		ctx.beginPath
-		ctx.moveTo(0, vals(i))
-		(i+1 until width).foreach(n => ctx.lineTo(n-i, vals(n)))
-		if (i != 0)
-			(0 to i).foreach(n => ctx.lineTo(n+(width-i), vals(n)))
-		ctx.closePath
+		if (x >= width)
+			((i+1) until width).foreach(n => ctx.lineTo(n-i, vals(n)))
+		(0 to i).foreach(n => ctx.lineTo(n + (width - i), vals(n)))
 		ctx.stroke
 		x += 1
-		if (x >= width - 1) ctx.translate(1, 0)
 		t += 0.02
 	}
 
