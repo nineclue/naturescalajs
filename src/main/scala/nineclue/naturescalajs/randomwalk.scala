@@ -1,10 +1,14 @@
 package nineclue.naturescalajs
 
 import util.Random
+import org.scalajs.dom
 
-class RandomWalk(parent:String, width:Int, height:Int) extends CanvasEngine(parent, width, height) {
-	var x:Int = width / 2
-	var y:Int = height / 2
+class RandomWalk(width:Int = 400, height:Int = 400) extends CanvasEngine {
+	private var x:Int = width / 2
+	private var y:Int = height / 2
+	val canvas:dom.HTMLCanvasElement = newCanvas("Random Walk", width, height)
+	val description = "Randomly moving dot"
+	private val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
 
 	ctx.fillStyle = "rgb(0,0,0)"
 
@@ -19,13 +23,17 @@ class RandomWalk(parent:String, width:Int, height:Int) extends CanvasEngine(pare
 	}
 }
 
-class RandomDraw(parent:String, width:Int, height:Int) extends CanvasEngine(parent, width, height) {
-	var x = 0
-	val vals = new Array[Int](width)
+class RandomGraph(width:Int = 600, height:Int = 300) extends CanvasEngine {
+	private var x = 0
+	private val vals = new Array[Int](width)
+	val canvas:dom.HTMLCanvasElement = newCanvas("Random Graph", width, height)
+	val description = "Graph of random value"
+	private val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
 
 	ctx.fillStyle = "black"
 	ctx.strokeStyle = "black"
-	def remap = Utility.map(Int.MinValue, Int.MaxValue, 0, canvas.height)_
+
+	private def remap = Utility.map(Int.MinValue, Int.MaxValue, 0, canvas.height)_
 
 	def draw = {
 		val i = x % width
@@ -41,14 +49,18 @@ class RandomDraw(parent:String, width:Int, height:Int) extends CanvasEngine(pare
 	}
 }
 
-class NoiseDraw(parent:String, val width:Int, val height:Int) extends CanvasEngine(parent, width, height) {
-	var x = 0
-	var t:Double = 0.0
-	val vals = new Array[Int](width)
+class NoiseGraph(val width:Int = 600, val height:Int = 300) extends CanvasEngine {
+	private var x = 0
+	private var t:Double = 0.0
+	private val vals = new Array[Int](width)
+	val canvas:dom.HTMLCanvasElement = newCanvas("Noise Graph", width, height)
+	val description = "Graph of Simplex Noise"
+	private val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
 
 	ctx.fillStyle = "black"
 	ctx.strokeStyle = "black"
-	def remap = Utility.map(-1, 1, 0, canvas.height)_
+
+	private def remap = Utility.map(-1, 1, 0, canvas.height)_
 
 	def draw = {
 		val i = x % width
