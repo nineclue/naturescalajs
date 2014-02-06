@@ -7,6 +7,7 @@ import js.Dynamic.{ global => g }
 abstract trait CanvasEngine {
   var handlerID:js.Number = 0
   var active = false
+  var interval:Int = 1000 / 30
 
   /* descendents should call newCanvas method with appropriate parameters and
      assign its return value to canvas variable
@@ -16,9 +17,9 @@ abstract trait CanvasEngine {
   val description:String
 	def draw:Unit
 
-  def activate(fps:Int = 30):Unit = {
+  def activate = {
     if (active) dom.clearInterval(handlerID)
-    handlerID = dom.setInterval(() => draw, 1000 / fps)
+    handlerID = dom.setInterval(() => draw, interval)
     active = true
   }
   def deactivate = {
@@ -27,14 +28,15 @@ abstract trait CanvasEngine {
     active = false
   }
 
-  def setActive(v:Boolean, fps:Int = 30) = if (v) activate(fps) else deactivate
+  def setActive(v:Boolean) = if (v) activate else deactivate
 
-  def newCanvas(id:String, width:Int = 600, height:Int = 600) = {
+  def newCanvas(id:String, width:Int = 600, height:Int = 600, itv:Int = 1000/30) = {
     val can = g.document.createElement("canvas").asInstanceOf[dom.HTMLCanvasElement]
     can.id = id
     can.width = width
     can.height = height
     can.style.border = "1px solid gray"
+    interval = itv
     can
   }
 }

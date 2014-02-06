@@ -5,7 +5,7 @@ import org.scalajs.dom
 import js.Dynamic.{ global => g }
 
 object Naturescalajs {
-  val examples:List[CanvasEngine] = List(new RandomWalk, new RandomGraph, new NoiseGraph)
+  val examples:List[CanvasEngine] = List(new RandomWalk, new NoiseWalk, new RandomGraph, new NoiseGraph, new TwoDNoise)
 
   def main(): Unit = {
     val demos = g.document.createElement("ul")
@@ -20,7 +20,7 @@ object Naturescalajs {
           obj.deactivate
         } else {
           item.style.color = "green"
-          obj.activate(30)
+          obj.activate
         }
       }
       item.appendChild(g.document.createElement("br"))
