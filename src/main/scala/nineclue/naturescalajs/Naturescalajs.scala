@@ -50,11 +50,17 @@ object Naturescalajs {
       val button = g.document.createElement("button").asInstanceOf[dom.HTMLButtonElement]
       button.innerHTML = "open"
       page.appendChild(button)
+      val demos = g.document.createElement("div")
+      demos.id = "demos"
+      page.appendChild(demos)
       button.onclick = { (e:dom.MouseEvent) => {
-        val parent = button.parentNode.asInstanceOf[dom.HTMLElement]
-        println(parent.children.length)
+        if (demos.children.asInstanceOf[js.Array[js.Any]].length == 0) {
           button.innerHTML = "close"
-          addDemos(page.asInstanceOf[dom.HTMLElement], cs)
+          addDemos(demos.asInstanceOf[dom.HTMLElement], cs)
+        }
+        else {
+          println("delete demos")
+        }
       } }
       pages.appendChild(page)
     }
