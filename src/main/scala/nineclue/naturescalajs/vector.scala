@@ -19,4 +19,17 @@ case class Vector2D(x:Double, y:Double) extends Vector {
 	def norm() = this / this.mag()
 }
 
-case class Vector3D(x:Double, y:Double, z:Double) extends Vector
+// case class Vector3D(x:Double, y:Double, z:Double) extends Vector
+
+class Mover(location:Vector2D, velocity:Vector2D, val maxX:Double, val maxY:Double) {
+	var loc:Vector2D = location
+	var vel:Vector2D = velocity
+
+	def update = {
+		loc += vel
+		if (loc.x > maxX) loc = Vector2D(0, loc.y)
+		else if (loc.x < 0) loc = Vector2D(maxX, loc.y)
+		if (loc.y > maxY) loc = Vector2D(loc.x, 0)
+		else if (loc.y < 0) loc = Vector2D(loc.x, maxY)
+	}
+}

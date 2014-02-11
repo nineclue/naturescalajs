@@ -59,3 +59,24 @@ class VectorMagnitude(val width:Int = 300, val height:Int = 300) extends CanvasE
     ctx.stroke
   }
 }
+
+class Motion101(val width:Int=640, val height:Int=360) extends CanvasEngine {
+  val canvas:dom.HTMLCanvasElement = newCanvas("Motion 101", width, height)
+  val description = "Example 1.7 Motion 101"
+  private val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+
+  val mover = new Mover(Vector2D(Random.nextInt(width), Random.nextInt(height)), 
+    Vector2D(Random.nextInt(5) - 2, Random.nextInt(5) - 2), width, height)
+
+  ctx.fillStyle = "yellow"
+  ctx.strokeStyle = "blue"
+  
+  def draw = {
+    ctx.clearRect(0, 0, width, height)
+    mover.update
+    ctx.beginPath
+    ctx.arc(mover.loc.x, mover.loc.y, 30, 0, Math.PI * 2)
+    ctx.stroke
+    ctx.fill
+  }
+}
