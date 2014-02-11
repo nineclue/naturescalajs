@@ -8,7 +8,7 @@ object Naturescalajs {
   type Page = (String, List[CanvasEngine])
   val introduction:List[CanvasEngine] = List(new RandomWalk, new NoiseWalk,
     new RandomGraph, new NoiseGraph, new TwoDNoise)
-  val vector:List[CanvasEngine] = List(new BouncingBall)
+  val vector:List[CanvasEngine] = List(new BouncingBall, new VectorMagnitude)
   val examples:List[Page] = List(("Introduction", introduction),
     ("Chapter 1. Vector", vector))
 
@@ -63,6 +63,14 @@ object Naturescalajs {
           obj.activate
         }
       } }
+      if (obj.trackMouse) {
+        obj.canvas.onmousemove = { (e:dom.MouseEvent) => {
+          val bound = obj.canvas.getBoundingClientRect
+          obj.mx = e.clientX - bound.left
+          obj.my = e.clientY - bound.top
+          ():js.Any
+        }}
+      }
       item.appendChild(g.document.createElement("br"))
       item.appendChild(obj.canvas)
       items.appendChild(item)

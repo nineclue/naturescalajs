@@ -8,6 +8,9 @@ abstract trait CanvasEngine {
   var handlerID:js.Number = 0
   var active = false
   var interval:Int = 1000 / 30
+  val trackMouse = false
+  var mx:Double = 0.0
+  var my:Double = 0.0
 
   /* descendents should call newCanvas method with appropriate parameters and
      assign its return value to canvas variable
