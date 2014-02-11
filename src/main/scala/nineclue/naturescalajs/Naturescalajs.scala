@@ -5,38 +5,11 @@ import org.scalajs.dom
 import js.Dynamic.{ global => g }
 
 object Naturescalajs {
-  /*
-  val examples:List[CanvasEngine] = List(new RandomWalk, new NoiseWalk, new RandomGraph, new NoiseGraph, new TwoDNoise)
-
-  def main(): Unit = {
-    val demos = g.document.createElement("ul")
-    examples.foreach { obj =>
-      val item = g.document.createElement("li")
-      item.id = obj.getClass.getName
-      item.innerHTML = obj.canvas.id
-      item.style.color = "red"
-      item.onclick = (e:dom.MouseEvent) => {
-        if (obj.active) {
-          item.style.color = "red"
-          obj.deactivate
-        } else {
-          item.style.color = "green"
-          obj.activate
-        }
-      }
-      item.appendChild(g.document.createElement("br"))
-      item.appendChild(obj.canvas)
-      demos.appendChild(item)
-    }
-    g.document.getElementById("playground").appendChild(demos)
-  }
-  */
-
   type Page = (String, List[CanvasEngine])
-  val introduction:List[CanvasEngine] = List(new RandomWalk, new NoiseWalk, 
+  val introduction:List[CanvasEngine] = List(new RandomWalk, new NoiseWalk,
     new RandomGraph, new NoiseGraph, new TwoDNoise)
   val vector:List[CanvasEngine] = List(new BouncingBall)
-  val examples:List[Page] = List(("Introduction", introduction), 
+  val examples:List[Page] = List(("Introduction", introduction),
     ("Chapter 1. Vector", vector))
 
   def main(): Unit = {
@@ -54,14 +27,20 @@ object Naturescalajs {
       demos.id = "demos"
       page.appendChild(demos)
       button.onclick = { (e:dom.MouseEvent) => {
-        if (demos.children.asInstanceOf[js.Array[js.Any]].length == 0) {
-          button.innerHTML = "close"
+        if (demos.children.asInstanceOf[js.Array[js.Any]].length == (0:js.Number)) {
           addDemos(demos.asInstanceOf[dom.HTMLElement], cs)
         }
-        else {
-          println("delete demos")
-        }
-      } }
+        val display =
+          if (button.innerHTML == ("open":js.String)) {
+            button.innerHTML = "close"
+            "block"
+          } else {
+            button.innerHTML = "open"
+            "none"
+          }
+        demos.children.asInstanceOf[js.Array[dom.HTMLElement]].foreach { _.style.display = display }
+        ():js.Any
+      } }:js.Function1[dom.MouseEvent, js.Any]
       pages.appendChild(page)
     }
     g.document.getElementById("playground").appendChild(pages)
