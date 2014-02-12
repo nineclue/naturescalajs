@@ -64,18 +64,61 @@ class Motion101(val width:Int=640, val height:Int=360) extends CanvasEngine {
   val canvas:dom.HTMLCanvasElement = newCanvas("Motion 101", width, height)
   val description = "Example 1.7 Motion 101"
   private val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+  override val trackMouse = true
 
-  val mover = new Mover(Vector2D(Random.nextInt(width), Random.nextInt(height)), 
+  // constant mover
+  val mover1 = new Mover(Vector2D(Random.nextInt(width), Random.nextInt(height)),
     Vector2D(Random.nextInt(5) - 2, Random.nextInt(5) - 2), width, height)
 
-  ctx.fillStyle = "yellow"
-  ctx.strokeStyle = "blue"
-  
+  // mover with constant acceleration
+  val mover2 = new Mover(Vector2D(Random.nextInt(width), Random.nextInt(height)),
+    Vector2D(Random.nextInt(5) - 2, Random.nextInt(5) - 2), width, height)
+  val mover2Accel = Vector2D(-0.001, 0.01)
+  mover2.setAccelF((_) => mover2Accel)
+
+  val mover3 = new Mover(Vector2D(Random.nextInt(width), Random.nextInt(height)),
+    Vector2D(Random.nextInt(5) - 2, Random.nextInt(5) - 2), width, height)
+  mover3.setAccelF((_) => Vector.rand2D)
+
+  val mover4 = new Mover(Vector2D(Random.nextInt(width), Random.nextInt(height)),
+    Vector2D(Random.nextInt(5) - 2, Random.nextInt(5) - 2), width, height)
+  mover4.setAccelF((m:Mover) => {
+      val dir = Vector2D(mx, my) - m.loc
+      dir.norm * 0.5
+    })
+
   def draw = {
     ctx.clearRect(0, 0, width, height)
-    mover.update
+
+    mover1.update
+    ctx.fillStyle = "yellow"
+    ctx.strokeStyle = "black"
     ctx.beginPath
-    ctx.arc(mover.loc.x, mover.loc.y, 30, 0, Math.PI * 2)
+    ctx.arc(mover1.loc.x, mover1.loc.y, 30, 0, Math.PI * 2)
+    ctx.stroke
+    ctx.fill
+
+    mover2.update
+    ctx.fillStyle = "green"
+    ctx.strokeStyle = "black"
+    ctx.beginPath
+    ctx.arc(mover2.loc.x, mover2.loc.y, 30, 0, Math.PI * 2)
+    ctx.stroke
+    ctx.fill
+
+    mover3.update
+    ctx.fillStyle = "blue"
+    ctx.strokeStyle = "black"
+    ctx.beginPath
+    ctx.arc(mover3.loc.x, mover3.loc.y, 30, 0, Math.PI * 2)
+    ctx.stroke
+    ctx.fill
+
+    mover4.update
+    ctx.fillStyle = "red"
+    ctx.strokeStyle = "black"
+    ctx.beginPath
+    ctx.arc(mover4.loc.x, mover4.loc.y, 30, 0, Math.PI * 2)
     ctx.stroke
     ctx.fill
   }
