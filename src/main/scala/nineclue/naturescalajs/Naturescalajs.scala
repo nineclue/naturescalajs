@@ -8,10 +8,11 @@ object Naturescalajs {
   type Page = (String, List[CanvasEngine])
   val introduction:List[CanvasEngine] = List(new RandomWalk, new NoiseWalk,
     new RandomGraph, new NoiseGraph, new TwoDNoise)
-  val vector:List[CanvasEngine] = List(new BouncingBall, new VectorMagnitude, 
+  val vector:List[CanvasEngine] = List(new BouncingBall, new VectorMagnitude,
     new Motion101)
+  val forces:List[CanvasEngine] = List(new Forces0)
   val examples:List[Page] = List(("Introduction", introduction),
-    ("Chapter 1. Vector", vector))
+    ("Chapter 1. Vector", vector), ("Chapter 2. Force", forces))
 
   def main(): Unit = {
     val pages = g.document.createElement("ul")
