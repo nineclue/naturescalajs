@@ -37,7 +37,6 @@ class Mover(location:Vector2D, velocity:Vector2D) {
 	var acc:Vector2D = Vector.zero
 	var mass:Double = 10.0
 	var maxVel:Double = 10.0
-	var relocateF:Vector2D => Vector2D = ( (l:Vector2D) => l )
 
 	var accelF:Option[Mover => Vector2D] = None
 	var forceF:Option[Mover => Vector2D] = None
@@ -64,18 +63,21 @@ class Mover(location:Vector2D, velocity:Vector2D) {
 		accelF match {
 			case Some(f) =>
 				acc += f(this)
-				vel += acc
-				if (vel.mag > maxVel) vel = vel.limit(maxVel)
 			case None =>
 		}
+		vel += acc
+		if (vel.mag > maxVel) vel = vel.limit(maxVel)
 		loc += vel
-		loc = relocateF(loc)
 	}
 }
 
 class CanvasMover(location:Vector2D, velocity:Vector2D, val canvas:HTMLCanvasElement,
 	val fill:String = "blue", val strike:String = "black") extends Mover(location, velocity) {
-	val radius:Double = 30.0
+	var radiusF:() => Double = () => mass * 3
+	var radius = radiusF()
+	var relocateF:Option[CanvasMover => Unit] = None
+
+	def reRadius = ( radius = radiusF() )
 
 	var draw:CanvasRenderingContext2D => Unit = { (c:CanvasRenderingContext2D) =>
     c.fillStyle = fill
@@ -86,15 +88,26 @@ class CanvasMover(location:Vector2D, velocity:Vector2D, val canvas:HTMLCanvasEle
     c.fill
 	}
 
-	relocateF = { (l:Vector2D) =>
-		val x:Double =
-			if (l.x >= (canvas.width + radius / 2)) -radius/2
-			else if (l.x <= -radius/2) canvas.width + radius / 2
-			else l.x
-		val y:Double =
-			if (l.y >= (canvas.height + radius / 2)) -radius/2
-			else if (l.y <= -radius/2) canvas.height + radius / 2
-			else l.y
-		Vector2D(x, y)
+	override def update = {
+		super.update
+		relocateF match {
+			case Some(f) =>
+				f(this)
+			case None =>
+		}
 	}
+
+	val otherside = { (m:CanvasMover) =>
+		val x:Double =
+			if (m.loc.x >= (canvas.width + radius / 2)) -radius/2
+			else if (m.loc.x <= -radius/2) canvas.width + radius / 2
+			else m.loc.x
+		val y:Double =
+			if (m.loc.y >= (canvas.height + radius / 2)) -radius/2
+			else if (m.loc.y <= -radius/2) canvas.height + radius / 2
+			else m.loc.y
+		m.loc = Vector2D(x, y)
+	}
+
+	relocateF = Some(otherside)
 }
