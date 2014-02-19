@@ -82,6 +82,7 @@ class Mover(location:Vector2D, velocity:Vector2D) {
 			case Some(f) =>
 				aAcc = f(this)
 			case None =>
+				aAcc = 0.0
 		}
 		aVel += aAcc
 		ang += aVel
@@ -92,7 +93,7 @@ class CanvasMover(location:Vector2D, velocity:Vector2D, val canvas:HTMLCanvasEle
 	val fill:String = "blue", val strike:String = "black") extends Mover(location, velocity) {
 	var radiusF:() => Double = () => mass * 3
 	var radius = radiusF()
-	var relocateF:Option[CanvasMover => Unit] = Some(otherside)
+	var relocateF:Option[CanvasMover => Unit] = None
 
 	def reRadius = ( radius = radiusF() )
 
@@ -126,5 +127,5 @@ class CanvasMover(location:Vector2D, velocity:Vector2D, val canvas:HTMLCanvasEle
 		m.loc = Vector2D(x, y)
 	}
 
-	// relocateF = Some(otherside)
+	relocateF = Some(otherside)
 }
