@@ -11,8 +11,10 @@ object Naturescalajs {
   val vector:List[CanvasEngine] = List(new BouncingBall, new VectorMagnitude,
     new Motion101)
   val forces:List[CanvasEngine] = List(new Forces0)
+  val oscillation:List[CanvasEngine] = List(new SpiralDraw)
   val examples:List[Page] = List(("Introduction", introduction),
-    ("Chapter 1. Vector", vector), ("Chapter 2. Force", forces))
+    ("Chapter 1. Vector", vector), ("Chapter 2. Force", forces),
+    ("Chapter 3. Oscillation", oscillation))
 
   def main(): Unit = {
     val pages = g.document.createElement("ul")
@@ -70,6 +72,16 @@ object Naturescalajs {
           val bound = obj.canvas.getBoundingClientRect
           obj.mx = e.clientX - bound.left
           obj.my = e.clientY - bound.top
+          ():js.Any
+        }}
+      }
+      if (obj.trackKey) {
+        obj.canvas.onkeydown = { (e:dom.KeyboardEvent) => {
+          obj.keys += e.keyCode
+          ():js.Any
+        }}
+        obj.canvas.onkeyup = { (e:dom.KeyboardEvent) => {
+          obj.keys -= e.keyCode
           ():js.Any
         }}
       }

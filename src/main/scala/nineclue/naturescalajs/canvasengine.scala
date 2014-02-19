@@ -11,6 +11,10 @@ abstract trait CanvasEngine {
   val trackMouse = false
   var mx:Double = 0.0
   var my:Double = 0.0
+  val trackKey = false
+  val keys = collection.mutable.Set.empty[js.Number]
+  /* Enter : 13, Ctrl : 17, Alt : 18, Esc : 27, Space : 32,
+  PgUp : 33, PgDn : 34, Left : 37, Up : 38, Right : 39, Down : 40 */
 
   /* descendents should call newCanvas method with appropriate parameters and
      assign its return value to canvas variable

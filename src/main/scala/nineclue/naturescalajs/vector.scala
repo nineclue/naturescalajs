@@ -7,10 +7,15 @@ import dom.{ HTMLCanvasElement, CanvasRenderingContext2D }
 trait Vector
 
 object Vector {
+	type Degree = Double
+	type Radian = Double
+	implicit def deg2rad(d:Degree):Radian = d * Math.PI / 180
+
 	def apply(x:Double, y:Double) = Vector2D(x, y)
 	// def apply(x:Double, y:Double, z:Double) = Vector3d(x, y, z)
 	def rand2D = {
-		val a = Random.nextInt(360) * Math.PI / 180
+		// val a:Radian = Random.nextInt(360) * Math.PI / 180
+		val a:Radian = Random.nextInt(360):Degree
 		Vector2D(Math.sin(a), Math.cos(a))
 	}
 	val zero = Vector2D(0, 0)
@@ -37,9 +42,13 @@ class Mover(location:Vector2D, velocity:Vector2D) {
 	var acc:Vector2D = Vector.zero
 	var mass:Double = 10.0
 	var maxVel:Double = 10.0
+	var ang:Double = 0.0
+	var aVel:Double = 0.0
+	var aAcc:Double = 0.0
 
 	var accelF:Option[Mover => Vector2D] = None
 	var forceF:Option[Mover => Vector2D] = None
+	var aAccelF:Option[Mover => Double] = None
 
 	def setAccelF(f: Mover => Vector2D) = {
 		accelF = Some(f)
@@ -68,6 +77,14 @@ class Mover(location:Vector2D, velocity:Vector2D) {
 		vel += acc
 		if (vel.mag > maxVel) vel = vel.limit(maxVel)
 		loc += vel
+
+		aAccelF match {
+			case Some(f) =>
+				aAcc = f(this)
+			case None =>
+		}
+		aVel += aAcc
+		ang += aVel
 	}
 }
 
@@ -75,7 +92,7 @@ class CanvasMover(location:Vector2D, velocity:Vector2D, val canvas:HTMLCanvasEle
 	val fill:String = "blue", val strike:String = "black") extends Mover(location, velocity) {
 	var radiusF:() => Double = () => mass * 3
 	var radius = radiusF()
-	var relocateF:Option[CanvasMover => Unit] = None
+	var relocateF:Option[CanvasMover => Unit] = Some(otherside)
 
 	def reRadius = ( radius = radiusF() )
 
@@ -109,5 +126,5 @@ class CanvasMover(location:Vector2D, velocity:Vector2D, val canvas:HTMLCanvasEle
 		m.loc = Vector2D(x, y)
 	}
 
-	relocateF = Some(otherside)
+	// relocateF = Some(otherside)
 }
