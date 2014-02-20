@@ -12,7 +12,7 @@ abstract trait CanvasEngine {
   var mx:Double = 0.0
   var my:Double = 0.0
   val trackKey = false
-  val keys = collection.mutable.Set.empty[js.Number]
+  val keys = collection.mutable.Set.empty[Int]
   /* Enter : 13, Ctrl : 17, Alt : 18, Esc : 27, Space : 32,
   PgUp : 33, PgDn : 34, Left : 37, Up : 38, Right : 39, Down : 40 */
 
@@ -27,11 +27,13 @@ abstract trait CanvasEngine {
   def activate = {
     if (active) dom.clearInterval(handlerID)
     handlerID = dom.setInterval(() => draw, interval)
+    if (trackKey) canvas.focus
     active = true
   }
   def deactivate = {
     if (active) dom.clearInterval(handlerID)
     handlerID = 0
+    if (trackKey) canvas.blur
     active = false
   }
 

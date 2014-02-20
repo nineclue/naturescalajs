@@ -11,7 +11,7 @@ object Naturescalajs {
   val vector:List[CanvasEngine] = List(new BouncingBall, new VectorMagnitude,
     new Motion101)
   val forces:List[CanvasEngine] = List(new Forces0)
-  val oscillation:List[CanvasEngine] = List(new SpiralDraw)
+  val oscillation:List[CanvasEngine] = List(new SpiralDraw, new SpaceShip)
   val examples:List[Page] = List(("Introduction", introduction),
     ("Chapter 1. Vector", vector), ("Chapter 2. Force", forces),
     ("Chapter 3. Oscillation", oscillation))
@@ -76,12 +76,15 @@ object Naturescalajs {
         }}
       }
       if (obj.trackKey) {
+        obj.canvas.tabIndex = 1000
         obj.canvas.onkeydown = { (e:dom.KeyboardEvent) => {
-          obj.keys += e.keyCode
+          obj.keys.add(e.keyCode.toInt)
+          if (Seq(32, 37, 38, 39, 40).contains(e.keyCode.toInt)) e.preventDefault
           ():js.Any
         }}
         obj.canvas.onkeyup = { (e:dom.KeyboardEvent) => {
-          obj.keys -= e.keyCode
+          obj.keys.remove(e.keyCode.toInt)
+          if (Seq(32, 37, 38, 39, 40).contains(e.keyCode.toInt)) e.preventDefault
           ():js.Any
         }}
       }
