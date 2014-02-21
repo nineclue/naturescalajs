@@ -4,6 +4,8 @@ object Utility {
 	def map(fromMin:Double, fromMax:Double, toMin:Double, toMax:Double)(v:Double) =
 		((toMax - toMin) * (v - fromMin)) / (fromMax - fromMin) + toMin
 
+	def random(min:Double, max:Double) = map(Double.MinValue, Double.MaxValue, min, max)(util.Random.nextDouble)
+
 	// following are shameful copy from simplex3d
 	// https://code.google.com/p/simplex3d/source/browse/trunk/Simplex3dMath/src/simplex3d/math/SimplexNoise.scala?r=371
 	/*
@@ -89,7 +91,7 @@ object Utility {
 	    29,24,72,243,141,128,195,78,66,215,61,156,180)
 
 	  private final val perm:Array[Int] = new Array[Int](halfPerm.length*2)
-	  
+
 	  {
 	    var i =0;while(i < perm.length){
 	      perm(i)= halfPerm(i &0xFF)
@@ -164,7 +166,7 @@ object Utility {
 	    // Sum up and scale the result to cover the range [-1,1]
 	    8.85*(n0 + n1)
 	  }
-	  
+
 	  // Skew and unskew factors are a bit hairy for 2D, so define them as constants
 	  private final val F2 =0.36602540378443864676//(Math.sqrt(3.0) - 1.0) / 2.0
 	  private final val G2 =0.21132486540518711775//(3.0 - Math.sqrt(3.0)) / 6.0
@@ -521,4 +523,3 @@ object Utility {
 	  }
 	// }
 }
- 

@@ -11,7 +11,7 @@ object Naturescalajs {
   val vector:List[CanvasEngine] = List(new BouncingBall, new VectorMagnitude,
     new Motion101)
   val forces:List[CanvasEngine] = List(new Forces0)
-  val oscillation:List[CanvasEngine] = List(new SpiralDraw, new SpaceShip)
+  val oscillation:List[CanvasEngine] = List(new SpiralDraw, new SpaceShip, new Oscillators, new ComplexWave)
   val examples:List[Page] = List(("Introduction", introduction),
     ("Chapter 1. Vector", vector), ("Chapter 2. Force", forces),
     ("Chapter 3. Oscillation", oscillation))

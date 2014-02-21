@@ -69,3 +69,131 @@ class SpaceShip(val width:Int = 600, val height:Int = 400) extends CanvasEngine 
     ship.draw(ctx)
   }
 }
+
+// it's confusing, using 2d vector as convenient storage and calculator
+// I'd rather use tuple, but this is simple port
+class Oscillator(location:Vector2D, velocity:Vector2D, val amplitude:Vector2D) extends Mover(location, velocity) {
+  /* var noisex = 0.0
+  var noisey = 100000.0
+
+  def remap = Utility.map(Double.MinValue, Double.MaxValue, -0.01, 0.01)_
+  forceF = Some( (_:Mover) => {
+    noisex += 0.01
+    noisey += 0.01
+    Vector(remap(Utility.noise(noisex)), remap(Utility.noise(noisey)))
+  }) */
+
+  def draw(c:dom.CanvasRenderingContext2D) = {
+    val x = Math.sin(loc.x)*amplitude.x
+    val y = Math.sin(loc.y)*amplitude.y
+    c.beginPath
+    c.moveTo(0,0)
+    c.lineTo(x, y)
+    c.closePath
+    c.stroke
+    c.beginPath
+    c.arc(x, y, 20, 0, Math.PI*2)
+    c.stroke
+    c.fill
+  }
+}
+
+class Oscillators(val width:Int = 600, val height:Int = 400) extends CanvasEngine {
+  val canvas:dom.HTMLCanvasElement = newCanvas("Oscillators", width, height)
+  val description = "Chap.3 Oscillators"
+  private val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+
+  ctx.strokeStyle = "black"
+  ctx.fillStyle = "gray"
+
+  /* val amplitude = 200
+  var cycle = 60
+  val remap = Utility.map(0, cycle, 0, Math.PI*2)_
+
+  def draw = {
+    ctx.clearRect(0,0,width,height)
+
+    val x = amplitude * Math.cos(remap(cycle))
+    ctx.save
+    ctx.translate(width/2, height/2)
+    ctx.beginPath
+    ctx.moveTo(0, 0)
+    ctx.lineTo(x, 0)
+    ctx.arc(x, 0, 30, 0, Math.PI*2)
+    ctx.stroke
+    ctx.fill
+    ctx.restore
+    cycle += 1
+  }
+  */
+
+  val os = (1 to 10).map( (_:Int) => {
+    val vel = Vector(Utility.random(-0.05, 0.05), Utility.random(-0.05, 0.05))
+    val amp = Vector(util.Random.nextInt(width/2), util.Random.nextInt(height/2))
+    new Oscillator(Vector.zero, vel, amp) })
+
+  def draw = {
+    ctx.clearRect(0,0,width,height)
+    ctx.save
+    ctx.translate(width/2, height/2)
+
+    os.foreach( o => {
+      o.update
+      o.draw(ctx)
+    })
+    ctx.restore
+  }
+}
+
+class ComplexWave(val width:Int=600, val height:Int=400) extends CanvasEngine {
+  implicit class IntWithRad(d:Int) {
+    def toRadian:Double = d * Math.PI / 180
+  }
+  val canvas:dom.HTMLCanvasElement = newCanvas("ComplexWave", width, height)
+  val description = "Chap.3 Comlex Wave"
+  private val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+
+  ctx.fillStyle = "rgba(100, 100, 100, 100)"
+  ctx.strokeStyle = "black"
+
+  /*
+  val xstart = util.Random.nextInt
+  var x = xstart
+  def ymap = Utility.map(-1, 1, 0, height)_
+
+  def draw = {
+    val y = ymap(Math.sin(x.toRadian))
+    ctx.beginPath
+    ctx.arc(x - xstart, y, 20, 0, Math.PI*2)
+    ctx.stroke
+    ctx.fill
+    x += 1
+  }
+  */
+
+  var x = 0
+
+  var xval = util.Random.nextInt
+  var xnoise = 0.0
+  def xmap = Utility.map(-1, 1, 1, 10)_
+
+  var amp = height / 3.0
+  var anoise = 10000.0
+  def amap = Utility.map(-1, 1, -2, 2)_
+
+  def draw = {
+    val y = Math.sin(xval.toRadian) * amp + height / 2
+
+    ctx.beginPath
+    ctx.arc(x, y, 20, 0, Math.PI*2)
+    ctx.stroke
+    ctx.fill
+
+    x += 1
+    if (x >= width) { ctx.clearRect(0,0,width,height); x = 0 }
+    xval += xmap(Utility.noise(xnoise)).toInt
+    amp += amap(Utility.noise(anoise))
+    xnoise += 0.01
+    anoise += 0.01
+  }
+}
