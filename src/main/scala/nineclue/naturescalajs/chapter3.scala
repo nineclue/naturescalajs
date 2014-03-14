@@ -19,7 +19,7 @@ class SpiralDraw(val width:Int = 600, val height:Int = 400) extends CanvasEngine
     ctx.beginPath
     ctx.arc(x + width/2, y + height/2, 5, 0, Math.PI * 2)
     // c.stroke
-    ctx.fill
+    ctx.fill()
 
     theta += 0.02
     r += 0.05
@@ -94,7 +94,7 @@ class Oscillator(location:Vector2D, velocity:Vector2D, val amplitude:Vector2D) e
     c.beginPath
     c.arc(x, y, 20, 0, Math.PI*2)
     c.stroke
-    c.fill
+    c.fill()
   }
 }
 
@@ -187,7 +187,7 @@ class ComplexWave(val width:Int=600, val height:Int=400) extends CanvasEngine {
     ctx.beginPath
     ctx.arc(x, y, 20, 0, Math.PI*2)
     ctx.stroke
-    ctx.fill
+    ctx.fill()
 
     x += 1
     if (x >= width) { ctx.clearRect(0,0,width,height); x = 0 }

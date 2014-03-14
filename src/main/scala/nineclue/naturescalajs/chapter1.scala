@@ -28,7 +28,7 @@ class BouncingBall(val width:Int = 640, val height:Int = 360) extends CanvasEngi
 
     ctx.beginPath
     ctx.arc(x, y, radius, 0, Math.PI*2)
-    ctx.fill
+    ctx.fill()
     ctx.stroke
   }
 }

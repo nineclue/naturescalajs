@@ -99,7 +99,7 @@ class NoiseWalk(width:Int = 300, height:Int = 300) extends CanvasEngine {
 		ctx.beginPath
 		ctx.arc(x, y, 30, 0, Math.PI * 2)
 		ctx.stroke
-		ctx.fill
+		ctx.fill()
 	}
 }
 

@@ -103,7 +103,7 @@ class CanvasMover(location:Vector2D, velocity:Vector2D, val canvas:HTMLCanvasEle
     c.beginPath
     c.arc(loc.x, loc.y, radius, 0, Math.PI * 2)
     c.stroke
-    c.fill
+    c.fill()
 	}
 
 	override def update = {
